@@ -38,9 +38,12 @@ public class PedidoController {
     }
 
     @PostMapping
-    public Pedido guardar(@RequestBody Pedido p) {
-        // items will be cascaded
-        return pedidoService.save(p);
+    public ResponseEntity<?> guardar(@RequestBody Pedido p) {
+        try {
+            return ResponseEntity.ok(pedidoService.save(p));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")

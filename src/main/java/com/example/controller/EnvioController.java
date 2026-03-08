@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,8 +38,16 @@ public class EnvioController {
     }
 
     @PostMapping
-    public Envio guardar(@RequestBody Envio e) {
-        return envioService.save(e);
+    public ResponseEntity<?> guardar(@RequestBody Envio e) {
+        try {
+            return ResponseEntity.ok(envioService.save(e));
+        } catch (Exception ex) {
+            String msg = ex.getMessage() != null ? ex.getMessage() : "Error al guardar el envío";
+            if (msg.toLowerCase().contains("duplicate") || msg.toLowerCase().contains("unique")) {
+                return ResponseEntity.badRequest().body("Este pedido ya tiene un envío asignado");
+            }
+            return ResponseEntity.badRequest().body(msg);
+        }
     }
 
     @DeleteMapping("/{id}")

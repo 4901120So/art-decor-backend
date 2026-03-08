@@ -5,11 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name="productos")
 
 public class Producto {
-	
+
 	@Id
 	@Column(name= "Id_prod")
 	private int Id_Producto;
@@ -40,9 +42,12 @@ public class Producto {
 		this.stock = stock;
 		this.precio = precio;
 	}
+	@JsonProperty("Id_Producto")
 	public int getId_Producto() {
 		return Id_Producto;
 	}
+
+	@JsonProperty("Id_Producto")
 	public void setId_Producto(int id_Producto) {
 		Id_Producto = id_Producto;
 	}
